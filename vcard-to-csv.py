@@ -34,7 +34,3 @@ for file in glob.glob("*.vcf"):
     except AttributeError:
         pass
     writer.writerow([name, telephone, email, note])
-
-else: # Last for loop iteration
-    import code
-    code.interact(local=locals())
