@@ -3,7 +3,7 @@ import vobject
 import glob
 import csv
 
-with open("contacts.csv" as csv_file:
+with open("contacts.csv") as csv_file:
     writer = csv.writer(csv_file, delimiter='\t')
     writer.writerow(['Name','Telephone','Email','Note'])
 
@@ -30,7 +30,7 @@ for file in glob.glob("*.vcf"):
     except AttributeError:
         pass
     try:
-        note = print vCard.note.value
+        note = vCard.note.value
     except AttributeError:
         pass
     write.writerow([name, telephone, email, note])
