@@ -16,7 +16,7 @@ for file in glob.glob("*.vcf"):
     vCard_text = open(file).read()
     vCard = vobject.readOne(vCard_text)
     try:
-        name = vCard.n.value
+        name = vCard.n.value.strip()
     except AttributeError:
         print "Could not find name"
         pass
