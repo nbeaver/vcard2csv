@@ -15,15 +15,16 @@ for file in sorted(glob.glob("*.vcf")):
     print file
     vCard_text = open(file).read()
     vCard = vobject.readOne(vCard_text)
+    vCard.validate()
     try:
         name = str(vCard.n.value).strip()
     except AttributeError:
-        print "Could not find name"
+        print "Could not find name for file ",file
         pass
     try:
         telephone = vCard.tel.value
     except AttributeError:
-        print "Could not find telephone number"
+        print "Could not find telephone number for file ",file
         pass
     try:
         email = vCard.email.value
@@ -34,3 +35,6 @@ for file in sorted(glob.glob("*.vcf")):
     except AttributeError:
         pass
     writer.writerow([name, telephone, email, note])
+#else:
+#    import code
+#    code.interact(local=locals())
