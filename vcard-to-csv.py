@@ -7,7 +7,7 @@ csv_file = open("contacts.csv", 'w')
 writer = csv.writer(csv_file, delimiter='\t')
 writer.writerow(['Name','Telephone','Email','Note'])
 
-for file in glob.glob("*.vcf"):
+for file in sorted(glob.glob("*.vcf")):
     name = ''
     telephone = ''
     email = ''
