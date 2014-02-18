@@ -21,7 +21,7 @@ for file in glob.glob("*.vcf"):
         print "Could not find name"
         pass
     try:
-        telelphone = vCard.tel.value
+        telephone = vCard.tel.value
     except AttributeError:
         print "Could not find telephone number"
         pass
