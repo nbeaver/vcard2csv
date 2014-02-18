@@ -3,15 +3,13 @@ import vobject
 import glob
 import csv
 
+#TODO It might be a good idea to make the output file configurable
 csv_file = open("contacts.csv", 'w')
-writer = csv.writer(csv_file, delimiter='\t')
+writer = csv.writer(csv_file, delimiter='\t') # Technically a tab-delimited file
 writer.writerow(['Name','Telephone','Email','Note'])
 
 for file in sorted(glob.glob("*.vcf")):
-    name = ''
-    telephone = ''
-    email = ''
-    note = ''
+    name = telephone = email = note = ''
     print file
     vCard_text = open(file).read()
     vCard = vobject.readOne(vCard_text)
@@ -20,21 +18,22 @@ for file in sorted(glob.glob("*.vcf")):
         name = str(vCard.n.value).strip()
     except AttributeError:
         print "Could not find name for file ",file
-        pass
+        # A vCard without a name is not good.
+        # It does not get a pass.
     try:
-        telephone = vCard.tel.value
+        telephone = str(vCard.tel.value).strip()
     except AttributeError:
         print "Could not find telephone number for file ",file
-        pass
+        pass # Missing phone number is worth mentioning, but not stopping for.
     try:
-        email = vCard.email.value
+        email = str(vCard.email.value).strip()
     except AttributeError:
-        pass
+        pass # We don't expect every vCard to have an email address.
     try:
-        note = vCard.note.value
+        note = str(vCard.note.value)
     except AttributeError:
-        pass
+        pass # Many vCards will not have a note.
     writer.writerow([name, telephone, email, note])
-#else:
+#else: # This is executed after the last run of the for loop
 #    import code
 #    code.interact(local=locals())
