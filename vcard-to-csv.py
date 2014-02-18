@@ -3,24 +3,24 @@ import vobject
 import glob
 for file in glob.glob("*.vcf"):
     print file
-    s = open(file).read()
-    v = vobject.readOne(s)
+    vCard_text = open(file).read()
+    vCard = vobject.readOne(vCard_text)
     try:
-        print v.n.value
+        print vCard.n.value
     except AttributeError:
         print "Could not find name"
 	pass
     try:
-        print v.tel.value
+        print vCard.tel.value
     except AttributeError:
         print "Could not find telephone number"
 	pass
     try:
-        print v.email.value
+        print vCard.email.value
     except AttributeError:
         pass
     try:
-        print v.note.value
+        print vCard.note.value
     except AttributeError:
         pass
 else: # Last for loop iteration
