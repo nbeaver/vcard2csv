@@ -23,7 +23,7 @@ for file in sorted(glob.glob("*.vcf")):
     try:
         for tel in vCard.tel_list:
             # This strategy limits this to version 2.1 vCards.
-            # We would need e.g. type=CELL for version 3.0 vCards.
+            # We would need to parse e.g. type=CELL for version 3.0 vCards.
             if 'CELL' in tel.singletonparams:
                 cell = str(tel.value).strip()
             elif 'WORK' in tel.singletonparams:
