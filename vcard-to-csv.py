@@ -2,10 +2,13 @@
 import vobject # to parse vCard (vcf) files
 import glob # to open all *.vcf files
 import csv
+import sys
 
-#TODO Take output name as argument.
-csv_file = open("contacts.csv", 'w')
-writer = csv.writer(csv_file, delimiter='\t') # Technically a tab-delimited file
+#DONE Take output name as argument.
+output_file_name = sys.argv[1]
+csv_file = open(output_file_name, 'w')
+# Tab separated values are less annoying than comma-separated values.
+writer = csv.writer(csv_file, delimiter='\t')
 writer.writerow(['Name','Cell phone','Work phone','Home phone','Email','Note'])
 
 for file in sorted(glob.glob("*.vcf")):
