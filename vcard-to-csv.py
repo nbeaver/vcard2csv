@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import vobject
-import glob
+import vobject # to parse vCard (vcf) files
+import glob # to open all *.vcf files
 import csv
 
-#TODO It might be a good idea to make the output file configurable
+#TODO Take output name as argument.
 csv_file = open("contacts.csv", 'w')
 writer = csv.writer(csv_file, delimiter='\t') # Technically a tab-delimited file
 writer.writerow(['Name','Cell phone','Work phone','Home phone','Email','Note'])
