@@ -22,25 +22,10 @@ csv_file = open(output_file_name, 'w')
 writer = csv.writer(csv_file, delimiter='\t')
 writer.writerow(['Name','Cell phone','Work phone','Home phone','Email','Note'])
 
-for file in vcards:
-    name = cell = work = home = email = note = ''
-    vCard_text = open(file).read()
-    vCard = vobject.readOne(vCard_text)
-    vCard.validate()
-    if vCard.version.value == '3.0':
-        print "Warning: cannot process file `"+file+"` because it is vCard version 3.0."
-        continue
-    try:
-        name = str(vCard.n.value).strip()
-    except AttributeError:
-        print "Error: No name for file ",file
-        vCard.prettyPrint() 
-        # A vCard without a name is not good,
-        # so we let the exception crash the script.
-    try:
-        for tel in vCard.tel_list:
-            # This strategy limits this to version 2.1 vCards.
-            # We would need to parse e.g. type=CELL for version 3.0 vCards.
+def get_phone_numbers(vCard):
+    cell = home = work = None
+    for tel in vCard.tel_list:
+        if vCard.version.value == '2.1':
             if 'CELL' in tel.singletonparams:
                 cell = str(tel.value).strip()
             elif 'WORK' in tel.singletonparams:
@@ -48,18 +33,45 @@ for file in vcards:
             elif 'HOME' in tel.singletonparams:
                 home = str(tel.value).strip()
             else:
-                print "Warning: Unrecognized phone number category:",str(tel.singletonparams),' for phone number ',tel.value, tel,'in file `'+file+'`'
-    except AttributeError:
+                print "Warning: Unrecognized phone number category in file `"+file+"`"
+                tel.prettyPrint()
+        elif vCard.version.value == '3.0':
+            if 'CELL' in tel.params['TYPE']:
+                cell = str(tel.value).strip()
+            elif 'WORK' in tel.params['TYPE']:
+                work = str(tel.value).strip()
+            elif 'HOME' in tel.params['TYPE']:
+                home = str(tel.value).strip()
+            else:
+                print "Warning: Unrecognized phone number category in file `"+file+"`"
+                tel.prettyPrint()
+        else:
+            raise NotImplementedError("Version not implemented:"+vCard.version.value)
+    return cell, home, work
+
+for file in vcards:
+    name = full_name = cell = work = home = email = note = None
+    vCard_text = open(file).read()
+    vCard = vobject.readOne(vCard_text)
+    vCard.validate()
+    for key, val in vCard.contents.iteritems():
+        if key == 'n':
+            name = str(vCard.n.value).strip()
+        elif key == 'fn':
+            name = str(vCard.fn.value).strip()
+        elif key == 'tel':
+            cell, home, work = get_phone_numbers(vCard)
+        elif key == 'email':
+            email = str(vCard.email.value).strip()
+        elif key == 'note':
+            note = str(vCard.note.value)
+        else:
+            # An unused key, like `adr`, `title`, `url`, etc.
+            pass
+    if note == None:
+        print "Warning: No name for file `"+file+"`"
+    if all([cell, work, home]) == None:
         print "Warning: no telephone number for file `"+file+"` with name `"+name+"`"
-        pass # Missing phone number is worth mentioning, but not stopping for.
-    try:
-        email = str(vCard.email.value).strip()
-    except AttributeError:
-        pass # We don't expect every vCard to have an email address.
-    try:
-        note = str(vCard.note.value)
-    except AttributeError:
-        pass # Many vCards will not have a note.
     writer.writerow([name, cell, work, home, email, note])
 #else: # This is executed after the last run of the for loop
 #    import code

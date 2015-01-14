@@ -45,5 +45,4 @@ Simply run the script in the directory containing the vCard files and specify th
 Bugs
 ----
 
-Currently it only works for vCard version 2.1.
-vCard version 3.0 fields like ``type=CELL``.
+vCard version 4.0 has not been implemented.
