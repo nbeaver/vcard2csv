@@ -4,25 +4,39 @@ import glob # to open all *.vcf files
 import csv
 import sys
 
-#DONE Take output name as argument.
-output_file_name = sys.argv[1]
+if len(sys.argv) > 1:
+    output_file_name = sys.argv[1]
+else:
+    print "Usage: vcard-to-csv.py foo.csv"
+    sys.exit(1)
+
+vcards = sorted(glob.glob("*.vcf"))
+
+if len(vcards) == 0:
+    print "Error: no files ending with `.vcf` in current directory."
+    sys.exit(2)
+
 csv_file = open(output_file_name, 'w')
+
 # Tab separated values are less annoying than comma-separated values.
 writer = csv.writer(csv_file, delimiter='\t')
 writer.writerow(['Name','Cell phone','Work phone','Home phone','Email','Note'])
 
-for file in sorted(glob.glob("*.vcf")):
+for file in vcards:
     name = cell = work = home = email = note = ''
-    print file
     vCard_text = open(file).read()
     vCard = vobject.readOne(vCard_text)
     vCard.validate()
+    if vCard.version.value == '3.0':
+        print "Warning: cannot process file `"+file+"` because it is vCard version 3.0."
+        continue
     try:
         name = str(vCard.n.value).strip()
     except AttributeError:
-        print "Could not find name for file ",file
-        # A vCard without a name is not good.
-        # It does not get a pass.
+        print "Error: No name for file ",file
+        vCard.prettyPrint() 
+        # A vCard without a name is not good,
+        # so we let the exception crash the script.
     try:
         for tel in vCard.tel_list:
             # This strategy limits this to version 2.1 vCards.
@@ -34,9 +48,9 @@ for file in sorted(glob.glob("*.vcf")):
             elif 'HOME' in tel.singletonparams:
                 home = str(tel.value).strip()
             else:
-                print "Unrecognized phone number category:",str(tel.singletonparams),' for phone number ',tel.value, tel
+                print "Warning: Unrecognized phone number category:",str(tel.singletonparams),' for phone number ',tel.value, tel,'in file `'+file+'`'
     except AttributeError:
-        print "Could not find telephone number for file ",file
+        print "Warning: no telephone number for file `"+file+"` with name `"+name+"`"
         pass # Missing phone number is worth mentioning, but not stopping for.
     try:
         email = str(vCard.email.value).strip()
