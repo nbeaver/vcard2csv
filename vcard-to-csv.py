@@ -4,24 +4,6 @@ import glob # to open all *.vcf files
 import csv
 import sys
 
-if len(sys.argv) > 1:
-    output_file_name = sys.argv[1]
-else:
-    print "Usage: vcard-to-csv.py foo.csv"
-    sys.exit(1)
-
-vcards = sorted(glob.glob("*.vcf"))
-
-if len(vcards) == 0:
-    print "Error: no files ending with `.vcf` in current directory."
-    sys.exit(2)
-
-csv_file = open(output_file_name, 'w')
-
-# Tab separated values are less annoying than comma-separated values.
-writer = csv.writer(csv_file, delimiter='\t')
-writer.writerow(['Name','Cell phone','Work phone','Home phone','Email','Note'])
-
 def get_phone_numbers(vCard):
     cell = home = work = None
     for tel in vCard.tel_list:
@@ -49,7 +31,7 @@ def get_phone_numbers(vCard):
             raise NotImplementedError("Version not implemented:"+vCard.version.value)
     return cell, home, work
 
-for file in vcards:
+def get_info_list(file):
     name = full_name = cell = work = home = email = note = None
     vCard_text = open(file).read()
     vCard = vobject.readOne(vCard_text)
@@ -72,7 +54,28 @@ for file in vcards:
         print "Warning: No name for file `"+file+"`"
     if all([cell, work, home]) == None:
         print "Warning: no telephone number for file `"+file+"` with name `"+name+"`"
-    writer.writerow([name, cell, work, home, email, note])
-#else: # This is executed after the last run of the for loop
-#    import code
-#    code.interact(local=locals())
+
+    return [name, cell, work, home, email, note]
+
+if __name__ == "__main__":
+
+    if len(sys.argv) > 1:
+        output_file_name = sys.argv[1]
+    else:
+        print "Usage: vcard-to-csv.py foo.csv"
+        sys.exit(1)
+
+    vcards = sorted(glob.glob("*.vcf"))
+
+    if len(vcards) == 0:
+        print "Error: no files ending with `.vcf` in current directory."
+        sys.exit(2)
+
+    csv_file = open(output_file_name, 'w')
+
+    # Tab separated values are less annoying than comma-separated values.
+    writer = csv.writer(csv_file, delimiter='\t')
+    writer.writerow(['Name','Cell phone','Work phone','Home phone','Email','Note'])
+
+    for file in vcards:
+        writer.writerow(get_info_list(file))
