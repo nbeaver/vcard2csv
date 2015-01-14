@@ -32,15 +32,17 @@ def get_phone_numbers(vCard):
     return cell, home, work
 
 def get_info_list(file):
-    name = full_name = cell = work = home = email = note = None
+    name = cell = work = home = email = note = None
     vCard_text = open(file).read()
     vCard = vobject.readOne(vCard_text)
     vCard.validate()
     for key, val in vCard.contents.iteritems():
-        if key == 'n':
-            name = str(vCard.n.value).strip()
-        elif key == 'fn':
-            name = str(vCard.fn.value).strip()
+        if key == 'fn':
+            name = vCard.fn.value
+        elif key == 'n':
+            if name is None:
+                # May get overwritten if full name is available.
+                name = str(vCard.n.valueRepr()).replace('  ', ' ').strip()
         elif key == 'tel':
             cell, home, work = get_phone_numbers(vCard)
         elif key == 'email':
@@ -50,9 +52,9 @@ def get_info_list(file):
         else:
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
-    if note == None:
-        print "Warning: No name for file `"+file+"`"
-    if all([cell, work, home]) == None:
+    if name is None:
+        print "Warning: no name for file `"+file+"`"
+    if all(telephone_number is None for telephone_number in [cell, work, home]):
         print "Warning: no telephone number for file `"+file+"` with name `"+name+"`"
 
     return [name, cell, work, home, email, note]
