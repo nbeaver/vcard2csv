@@ -7,7 +7,7 @@ vCard to CSV
 :Author: Nathaniel Beaver
 
 This is a script to turn a directory full of vCard files into a single CSV file.
-Not all of the vCard fields are preserved, only name, phone numbers, email, and notes.
+Not all of the vCard fields are preserved; only name, phone numbers, email, and notes.
 
 It can also be imported and used as a module.
 
