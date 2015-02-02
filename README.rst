@@ -49,6 +49,12 @@ Simply run the script in the directory containing the vCard files and specify th
     python vcard-to-csv.py foo.csv
 
 ----
+TODO
+----
+
+Make phone numbers in the 123-456-7890 format instead of 1234567890 for better readability.
+
+----
 Bugs
 ----
 
