@@ -1,0 +1,8 @@
+- [ ] Check that the `vobject` library is installed.
+    - [ ] Print a helpful error message if it isnt.
+- [ ] Take `.vcf` files as arguments instead of just using `glob`.
+- [ ] Send CSV to `stdout` instead of opening a file.
+- [ ] Write a Makefile to generate the CSV output.
+- [ ] Make phone numbers in the 123-456-7890 format instead of 1234567890 for better readability.
+- [ ] Preserve every field in the VCF file, not just some of them.
+- [ ] Support vCard v4.0.
