@@ -61,9 +61,9 @@ def get_info_list(file):
 
 if __name__ == "__main__":
 
-    if len(sys.argv) > 1:
+    try:
         output_file_name = sys.argv[1]
-    else:
+    except IndexError:
         print "Usage: vcard-to-csv.py foo.csv"
         sys.exit(1)
 
