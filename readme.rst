@@ -4,7 +4,7 @@
 vCard to CSV
 ============
 
-:Author: Nathaniel Beaver
+:author: Nathaniel Beaver
 
 This is a script to turn a directory full of vCard files into a single CSV file.
 Not all of the vCard fields are preserved; only name, phone numbers, email, and notes.
@@ -58,4 +58,14 @@ this may be undesirable.
 vCard version 4.0 has not been implemented,
 though it would probably be straightforward to do so.
 
-See the [to-do list](todo.md) for more.
+See the `to-do list`_ for more.
+
+.. _to-do list: todo.md
+
+-------
+License
+-------
+
+This project is licensed under the terms of the `MIT license`_.
+
+.. _MIT license: LICENSE.txt
