@@ -16,7 +16,7 @@ def get_phone_numbers(vCard):
             elif 'HOME' in tel.singletonparams:
                 home = str(tel.value).strip()
             else:
-                print "Warning: Unrecognized phone number category in file `"+file+"`"
+                print "Warning: Unrecognized phone number category in `{}'".format(vCard)
                 tel.prettyPrint()
         elif vCard.version.value == '3.0':
             if 'CELL' in tel.params['TYPE']:
@@ -26,15 +26,16 @@ def get_phone_numbers(vCard):
             elif 'HOME' in tel.params['TYPE']:
                 home = str(tel.value).strip()
             else:
-                print "Warning: Unrecognized phone number category in file `"+file+"`"
+                printf "Warning: Unrecognized phone number category in `'".format(vCard)
                 tel.prettyPrint()
         else:
-            raise NotImplementedError("Version not implemented:"+vCard.version.value)
+            raise NotImplementedError("Version not implemented: {}".format(vCard.version.value))
     return cell, home, work
 
-def get_info_list(file):
+def get_info_list(vcard_filepath):
     name = cell = work = home = email = note = None
-    vCard_text = open(file).read()
+    with open(vcard_filepath) as fp:
+        vCard_text = fp.read()
     vCard = vobject.readOne(vCard_text)
     vCard.validate()
     for key, val in vCard.contents.iteritems():
@@ -54,9 +55,9 @@ def get_info_list(file):
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
-        print "Warning: no name for file `"+file+"`"
+        print "Warning: no name for file `'".format(vcard_filepath)
     if all(telephone_number is None for telephone_number in [cell, work, home]):
-        print "Warning: no telephone number for file `"+file+"` with name `"+name+"`"
+        print "Warning: no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name)
 
     return [name, cell, work, home, email, note]
 
