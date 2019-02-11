@@ -4,6 +4,7 @@ import glob
 import csv
 import argparse
 import os.path
+import sys
 
 def get_phone_numbers(vCard):
     cell = home = work = None
