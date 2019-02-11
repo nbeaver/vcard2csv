@@ -90,7 +90,7 @@ if __name__ == "__main__":
     vcards = sorted(glob.glob(vcard_pattern))
 
     if len(vcards) == 0:
-        print "Error: no files ending with `.vcf` in directory `{}'".format(args.readable_directory)
+        print "Error: no files ending with `.vcf` in directory `{}'".format(args.read_dir)
         sys.exit(2)
 
     # Tab separated values are less annoying than comma-separated values.
