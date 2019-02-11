@@ -55,7 +55,7 @@ def get_info_list(vcard_filepath):
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
-        print "Warning: no name for file `'".format(vcard_filepath)
+        print "Warning: no name for file `{}'".format(vcard_filepath)
     if all(telephone_number is None for telephone_number in [cell, work, home]):
         print "Warning: no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name)
 
