@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import vobject # to parse vCard (vcf) files
-import glob # to open all *.vcf files
+import vobject
+import glob
 import csv
 import argparse
 import os.path
