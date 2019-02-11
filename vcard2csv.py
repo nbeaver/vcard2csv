@@ -26,7 +26,7 @@ def get_phone_numbers(vCard):
             elif 'HOME' in tel.params['TYPE']:
                 home = str(tel.value).strip()
             else:
-                printf "Warning: Unrecognized phone number category in `{}'".format(vCard)
+                print "Warning: Unrecognized phone number category in `{}'".format(vCard)
                 tel.prettyPrint()
         else:
             raise NotImplementedError("Version not implemented: {}".format(vCard.version.value))
