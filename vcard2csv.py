@@ -6,6 +6,16 @@ import argparse
 import os.path
 import sys
 import logging
+import collections
+
+column_order = [
+    'Name',
+    'Cell phone',
+    'Work phone',
+    'Home phone',
+    'Email',
+    'Note',
+]
 
 def get_phone_numbers(vCard):
     cell = home = work = None
@@ -35,6 +45,9 @@ def get_phone_numbers(vCard):
     return cell, home, work
 
 def get_info_list(vcard_filepath):
+    vcard = collections.OrderedDict()
+    for column in column_order:
+        vcard[column] = None
     name = cell = work = home = email = note = None
     with open(vcard_filepath) as fp:
         vCard_text = fp.read()
@@ -43,16 +56,25 @@ def get_info_list(vcard_filepath):
     for key, val in vCard.contents.iteritems():
         if key == 'fn':
             name = vCard.fn.value
+            vcard['Name'] = name
         elif key == 'n':
             if name is None:
                 # May get overwritten if full name is available.
                 name = str(vCard.n.valueRepr()).replace('  ', ' ').strip()
+                vcard['Name'] = name
+
+                # TODO: separate fields for name and full name.
         elif key == 'tel':
             cell, home, work = get_phone_numbers(vCard)
+            vcard['Cell phone'] = cell
+            vcard['Home phone'] = home
+            vcard['Work phone'] = work
         elif key == 'email':
             email = str(vCard.email.value).strip()
+            vcard['Email'] = email
         elif key == 'note':
             note = str(vCard.note.value)
+            vcard['Note'] = note
         else:
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
@@ -61,7 +83,7 @@ def get_info_list(vcard_filepath):
     if all(telephone_number is None for telephone_number in [cell, work, home]):
         logging.warning("no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name))
 
-    return [name, cell, work, home, email, note]
+    return vcard
 
 def readable_directory(path):
     if not os.path.isdir(path):
@@ -74,7 +96,7 @@ def readable_directory(path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Combine a bunch of vCard (.vcf) files to TSV.'
+        description='Convert a bunch of vCard (.vcf) files to a single TSV file.'
     )
     parser.add_argument(
         'read_dir',
@@ -114,7 +136,8 @@ if __name__ == "__main__":
 
     # Tab separated values are less annoying than comma-separated values.
     writer = csv.writer(args.tsv_file, delimiter='\t')
-    writer.writerow(['Name','Cell phone','Work phone','Home phone','Email','Note'])
+    writer.writerow(column_order)
 
-    for vcard in vcards:
-        writer.writerow(get_info_list(vcard))
+    for vcard_path in vcards:
+        vcard_info = get_info_list(vcard_path)
+        writer.writerow(vcard_info.values())
