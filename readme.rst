@@ -6,7 +6,9 @@ vCard to CSV
 
 :author: Nathaniel Beaver
 
-This is a script to turn a directory full of vCard files into a single CSV file.
+This is a script to turn a directory full of vCard files
+into a single CSV file.
+It can also be imported and used as a module.
 
 Not all of the vCard fields are preserved; currently only these fields:
 
@@ -17,7 +19,8 @@ Not all of the vCard fields are preserved; currently only these fields:
 - Email
 - Note
 
-It can also be imported and used as a module.
+(I used this to convert vCards from an old LG Rumor 2 cell phone,
+so I have not needed to extract additional fields.)
 
 ------------
 Dependencies
