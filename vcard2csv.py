@@ -59,7 +59,7 @@ def get_info_list(vcard_filepath):
     if name is None:
         logging.warning("no name for file `{}'".format(vcard_filepath))
     if all(telephone_number is None for telephone_number in [cell, work, home]):
-        logging.warning("no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name)
+        logging.warning("no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name))
 
     return [name, cell, work, home, email, note]
 
