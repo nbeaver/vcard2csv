@@ -10,6 +10,7 @@ import collections
 
 column_order = [
     'Name',
+    'Full name',
     'Cell phone',
     'Work phone',
     'Home phone',
@@ -55,15 +56,10 @@ def get_info_list(vcard_filepath):
     vCard.validate()
     for key, val in vCard.contents.iteritems():
         if key == 'fn':
-            name = vCard.fn.value
-            vcard['Name'] = name
+            vcard['Full name'] = vCard.fn.value
         elif key == 'n':
-            if name is None:
-                # May get overwritten if full name is available.
-                name = str(vCard.n.valueRepr()).replace('  ', ' ').strip()
-                vcard['Name'] = name
-
-                # TODO: separate fields for name and full name.
+            name = str(vCard.n.valueRepr()).replace('  ', ' ').strip()
+            vcard['Name'] = name
         elif key == 'tel':
             cell, home, work = get_phone_numbers(vCard)
             vcard['Cell phone'] = cell
