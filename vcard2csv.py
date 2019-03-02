@@ -54,7 +54,7 @@ def get_info_list(vcard_filepath):
         vCard_text = fp.read()
     vCard = vobject.readOne(vCard_text)
     vCard.validate()
-    for key, val in vCard.contents.iteritems():
+    for key, val in list(vCard.contents.items()):
         if key == 'fn':
             vcard['Full name'] = vCard.fn.value
         elif key == 'n':
@@ -136,4 +136,4 @@ if __name__ == "__main__":
 
     for vcard_path in vcards:
         vcard_info = get_info_list(vcard_path)
-        writer.writerow(vcard_info.values())
+        writer.writerow(list(vcard_info.values()))
