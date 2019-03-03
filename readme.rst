@@ -38,17 +38,23 @@ which you can do with pip::
 
     pip install vobject
 
-It is also in the major package managers.
-
 .. _vobject: http://vobject.skyhouseconsulting.com/
 
-https://admin.fedoraproject.org/pkgdb/package/python-vobject/
+It is also in the major package managers.
 
-http://packages.ubuntu.com/search?keywords=python-vobject
+https://src.fedoraproject.org/rpms/python-vobject
+
+https://launchpad.net/ubuntu/+source/python-vobject
 
 https://tracker.debian.org/pkg/python-vobject
 
-https://aur.archlinux.org/packages/python2-vobject/
+https://security.archlinux.org/package/python-vobject
+
+https://software.opensuse.org/package/python-vobject
+
+https://software.opensuse.org/package/python2-vobject
+
+https://software.opensuse.org/package/python3-vobject
 
 -----
 Usage
