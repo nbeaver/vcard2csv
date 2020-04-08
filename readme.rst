@@ -36,7 +36,7 @@ If you encounter an error like this::
 then you need to install the python `vobject`_ library,
 which you can do with pip::
 
-    pip install vobject
+    pip install --user vobject
 
 .. _vobject: http://vobject.skyhouseconsulting.com/
 
