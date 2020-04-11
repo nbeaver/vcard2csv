@@ -29,7 +29,7 @@ Dependencies
 If you encounter an error like this::
 
     Traceback (most recent call last):
-      File "vcard-to-csv.py", line 2, in <module>
+      File "vcard2csv.py", line 2, in <module>
         import vobject # to parse vCard (vcf) files
     ImportError: No module named vobject
 
