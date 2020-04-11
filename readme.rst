@@ -63,7 +63,15 @@ Usage
 The vCard files must have the suffix ``.vcf``.
 Simply run the script in the directory containing the vCard files and specify the output filename::
 
-    python vcard-to-csv.py foo.csv
+    python vcard2csv.py . foo.csv
+    
+Or point the script at a directory containing the ``.vcf`` files
+
+    python vcard2csv.py example-vcards foo.csv
+    
+For additional help and options, pass the ``-h`` flag
+
+    python vcard2csv.py -h
 
 ----
 Bugs
