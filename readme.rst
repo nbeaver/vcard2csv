@@ -6,7 +6,7 @@ vCard to CSV
 
 :author: Nathaniel Beaver
 
-This is a script to turn a directory full of vCard files
+This is a Python 2/3 script to turn a directory full of vCard files
 into a single CSV file.
 It can also be imported and used as a module.
 
@@ -26,12 +26,20 @@ so I have not needed to extract additional fields.)
 Dependencies
 ------------
 
-If you encounter an error like this::
+If you encounter an error like this (Python 2)::
 
     Traceback (most recent call last):
       File "vcard2csv.py", line 2, in <module>
         import vobject # to parse vCard (vcf) files
     ImportError: No module named vobject
+
+or this (Python 3)::
+
+    Traceback (most recent call last):
+      File "vcard2csv.py", line 2, in <module>
+        import vobject
+    ModuleNotFoundError: No module named 'vobject'
+
 
 then you need to install the python `vobject`_ library,
 which you can do with pip::
@@ -73,6 +81,8 @@ Or point the script at a directory containing the ``.vcf`` files::
 For additional help and options, pass the ``-h`` flag::
 
     python vcard2csv.py -h
+
+The script is compatible with both Python 2 and Python 3.
 
 ----
 Bugs
