@@ -90,7 +90,7 @@ def readable_directory(path):
             'not a readable directory: {}'.format(path))
     return path
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description='Convert a bunch of vCard (.vcf) files to a single TSV file.'
     )
@@ -137,3 +137,6 @@ if __name__ == "__main__":
     for vcard_path in vcards:
         vcard_info = get_info_list(vcard_path)
         writer.writerow(list(vcard_info.values()))
+
+if __name__ == "__main__":
+    main()
