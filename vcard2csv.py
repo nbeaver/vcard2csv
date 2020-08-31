@@ -90,6 +90,19 @@ def readable_directory(path):
             'not a readable directory: {}'.format(path))
     return path
 
+def writable_file(path):
+    if os.path.exists(path):
+        if not os.access(path, os.W_OK):
+            raise argparse.ArgumentTypeError(
+                'not a writable file: {}'.format(path))
+    else:
+        # If the file doesn't already exist,
+        # the most direct way to tell if it's writable
+        # is to try writing to it.
+        with open(path, 'w') as fp:
+            pass
+    return path
+
 def main():
     parser = argparse.ArgumentParser(
         description='Convert a bunch of vCard (.vcf) files to a single TSV file.'
@@ -101,7 +114,7 @@ def main():
     )
     parser.add_argument(
         'tsv_file',
-        type=argparse.FileType('w'),
+        type=writable_file,
         help='Output file',
     )
     parser.add_argument(
@@ -131,12 +144,13 @@ def main():
         sys.exit(2)
 
     # Tab separated values are less annoying than comma-separated values.
-    writer = csv.writer(args.tsv_file, delimiter='\t')
-    writer.writerow(column_order)
+    with open(args.tsv_file, 'w') as tsv_fp:
+        writer = csv.writer(tsv_fp, delimiter='\t')
+        writer.writerow(column_order)
 
-    for vcard_path in vcards:
-        vcard_info = get_info_list(vcard_path)
-        writer.writerow(list(vcard_info.values()))
+        for vcard_path in vcards:
+            vcard_info = get_info_list(vcard_path)
+            writer.writerow(list(vcard_info.values()))
 
 if __name__ == "__main__":
     main()
