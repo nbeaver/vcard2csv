@@ -2,6 +2,7 @@ To do
 -----
 - [ ] Preserve every field in the VCF file, not just some of them.
 - [x] Write a Makefile to generate the CSV output.
+- [ ] Test non-ASCII UTF-8 input and other encodings
 
 Maybe
 -----
