@@ -144,7 +144,7 @@ def main():
         sys.exit(2)
 
     # Tab separated values are less annoying than comma-separated values.
-    with open(args.tsv_file, 'w') as tsv_fp:
+    with open(args.tsv_file, 'w', newline='\n') as tsv_fp:
         writer = csv.writer(tsv_fp, delimiter='\t')
         writer.writerow(column_order)
 
