@@ -1,0 +1,30 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Coote;Michael;;;
+FN:Michael Coote
+EMAIL;type=INTERNET;type=WORK;type=pref:mcoote@example.org
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:McGee;Barney;;;
+FN:Barney McGee
+EMAIL;type=INTERNET;type=WORK;type=pref:bmcgee2@example.org
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:O'Toole;Slugger;;;
+FN:Slugger O'Toole
+EMAIL;type=INTERNET;type=WORK;type=pref:sotoole@example.org
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Tracey;Bill;;;
+FN:Bill Tracey
+EMAIL;type=INTERNET;type=WORK;type=pref:btracey@example.org
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:McGurk;Johnny;;;
+FN:Johnny McGurk
+EMAIL;type=INTERNET;type=WORK;type=pref:jmcgurk@example.org
+END:VCARD
