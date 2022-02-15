@@ -45,14 +45,11 @@ def get_phone_numbers(vCard):
             raise NotImplementedError("Version not implemented: {}".format(vCard.version.value))
     return cell, home, work
 
-def get_info_list(vcard_filepath):
+def get_info_list(vCard, vcard_filepath):
     vcard = collections.OrderedDict()
     for column in column_order:
         vcard[column] = None
     name = cell = work = home = email = note = None
-    with open(vcard_filepath) as fp:
-        vCard_text = fp.read()
-    vCard = vobject.readOne(vCard_text)
     vCard.validate()
     for key, val in list(vCard.contents.items()):
         if key == 'fn':
@@ -75,11 +72,18 @@ def get_info_list(vcard_filepath):
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
-        logging.warning("no name for file `{}'".format(vcard_filepath))
+        logging.warning("no name for vCard in file `{}'".format(vcard_filepath))
     if all(telephone_number is None for telephone_number in [cell, work, home]):
         logging.warning("no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name))
 
     return vcard
+
+def get_vcards(vcard_filepath):
+    with open(vcard_filepath) as fp:
+        all_text = fp.read()
+    for vCard in vobject.readComponents(all_text):
+        yield vCard
+
 
 def readable_directory(path):
     if not os.path.isdir(path):
@@ -138,8 +142,8 @@ def main():
     logging.basicConfig(level=args.loglevel)
 
     vcard_pattern = os.path.join(args.read_dir, "*.vcf")
-    vcards = sorted(glob.glob(vcard_pattern))
-    if len(vcards) == 0:
+    vcard_paths = sorted(glob.glob(vcard_pattern))
+    if len(vcard_paths) == 0:
         logging.error("no files ending with `.vcf` in directory `{}'".format(args.read_dir))
         sys.exit(2)
 
@@ -148,9 +152,10 @@ def main():
         writer = csv.writer(tsv_fp, delimiter='\t')
         writer.writerow(column_order)
 
-        for vcard_path in vcards:
-            vcard_info = get_info_list(vcard_path)
-            writer.writerow(list(vcard_info.values()))
+        for vcard_path in vcard_paths:
+            for vcard in get_vcards(vcard_path):
+                vcard_info = get_info_list(vcard, vcard_path)
+                writer.writerow(list(vcard_info.values()))
 
 if __name__ == "__main__":
     main()
