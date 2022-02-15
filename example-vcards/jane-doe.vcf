@@ -1,7 +1,7 @@
 BEGIN:VCARD
 VERSION:3.0
 N:Doe;Jane;;;
-FN:John Doe
+FN:Jane Doe
 ORG:ACME.com Inc.;
 TITLE:Imaginary female test person
 EMAIL;type=INTERNET;type=WORK;type=pref:janeDoe@example.org
