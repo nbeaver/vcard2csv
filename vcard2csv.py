@@ -70,7 +70,7 @@ def get_info_list(vCard, vcard_filepath):
             vcard['Name'] = name
             names = name.split(' ')
             vcard['First name'] = names[0]
-            vcard['Lasts name'] = names[1]
+            vcard['Last name'] = names[1]
         elif key == 'tel':
             cell, home, work, mobile = get_phone_numbers(vCard)
             vcard['Cell phone'] = cell
@@ -92,6 +92,7 @@ def get_info_list(vCard, vcard_filepath):
             bday = str(vCard.bday.value).strip()
             vcard['Birthday'] = bday
         elif key == 'version':
+            # Ignore the key for vcard version
             pass
         else:
             print('unidentified key ' + key)
@@ -164,11 +165,21 @@ def main():
         dest="loglevel",
         const=logging.DEBUG,
     )
+    parser.add_argument(
+        '-r',
+        '--recursive',
+        help='Recursively search for vcard files in the specified directory & subdirectories',
+        action='store_true',
+        dest='is_recursive'
+    )
     args = parser.parse_args()
     logging.basicConfig(level=args.loglevel)
 
-    vcard_pattern = os.path.join(args.read_dir, "**/*.vcf")
-    vcard_paths = sorted(glob.glob(vcard_pattern, recursive=True))
+    if args.is_recursive:
+        vcard_pattern = os.path.join(args.read_dir, "**/*.vcf")
+    else:
+        vcard_pattern = os.path.join(args.read_dir, "*.vcf")
+    vcard_paths = sorted(glob.glob(vcard_pattern, recursive=args.is_recursive))
     if len(vcard_paths) == 0:
         logging.error("no files ending with `.vcf` in directory `{}'".format(args.read_dir))
         sys.exit(2)
