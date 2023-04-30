@@ -1,3 +1,5 @@
 *.swp
 .~lock.*
 test.csv
+.idea
+*.csv
