@@ -10,16 +10,20 @@ import collections
 
 column_order = [
     'Name',
-    'Full name',
+    'First name',
+    'Last name',
     'Cell phone',
     'Work phone',
     'Home phone',
+    'Mobile phone',
     'Email',
+    'Address',
     'Note',
+    'Birthday',
 ]
 
 def get_phone_numbers(vCard):
-    cell = home = work = None
+    cell = home = work = mobile = None
     for tel in vCard.tel_list:
         if vCard.version.value == '2.1':
             if 'CELL' in tel.singletonparams:
@@ -28,52 +32,75 @@ def get_phone_numbers(vCard):
                 work = str(tel.value).strip()
             elif 'HOME' in tel.singletonparams:
                 home = str(tel.value).strip()
+            elif 'MOBILE' in tel.singletonparams:
+                mobile = str(tel.value).strip()
             else:
                 logging.warning("Warning: Unrecognized phone number category in `{}'".format(vCard))
                 tel.prettyPrint()
         elif vCard.version.value == '3.0':
-            if 'CELL' in tel.params['TYPE']:
+            if 'CELL' in tel.params['TYPE'] or 'cell' in tel.params['TYPE']:
                 cell = str(tel.value).strip()
-            elif 'WORK' in tel.params['TYPE']:
+            elif 'WORK' in tel.params['TYPE'] or 'work' in tel.params['TYPE']:
                 work = str(tel.value).strip()
-            elif 'HOME' in tel.params['TYPE']:
+            elif 'HOME' in tel.params['TYPE'] or 'home' in tel.params['TYPE']:
                 home = str(tel.value).strip()
+            elif 'mobile' in tel.params['TYPE'] or 'MOBILE' in tel.params['TYPE']:
+                mobile = str(tel.value).strip()
             else:
                 logging.warning("Unrecognized phone number category in `{}'".format(vCard))
                 tel.prettyPrint()
         else:
             raise NotImplementedError("Version not implemented: {}".format(vCard.version.value))
-    return cell, home, work
+    return cell, home, work, mobile
 
 def get_info_list(vCard, vcard_filepath):
     vcard = collections.OrderedDict()
     for column in column_order:
         vcard[column] = None
-    name = cell = work = home = email = note = None
+    name = cell = work = home = mobile = None
     vCard.validate()
     for key, val in list(vCard.contents.items()):
         if key == 'fn':
-            vcard['Full name'] = vCard.fn.value
+            vcard['Name'] = vCard.fn.value
+            names = vCard.fn.value.split(' ')
+            vcard['First name'] = names[0]
+            vcard['Last name'] = names[1]
         elif key == 'n':
             name = str(vCard.n.valueRepr()).replace('  ', ' ').strip()
             vcard['Name'] = name
+            names = name.split(' ')
+            vcard['First name'] = names[0]
+            vcard['Last name'] = names[1]
         elif key == 'tel':
-            cell, home, work = get_phone_numbers(vCard)
+            cell, home, work, mobile = get_phone_numbers(vCard)
             vcard['Cell phone'] = cell
             vcard['Home phone'] = home
             vcard['Work phone'] = work
+            vcard['Mobile phone'] = mobile
         elif key == 'email':
             email = str(vCard.email.value).strip()
             vcard['Email'] = email
         elif key == 'note':
             note = str(vCard.note.value)
             vcard['Note'] = note
+        elif key == 'adr':
+            adr = str(vCard.adr.value).strip()
+            if adr.startswith('"') and adr.endswith('"'):
+                adr = adr[1:-1]
+            vcard['Address'] = adr
+        elif key == 'bday':
+            bday = str(vCard.bday.value).strip()
+            vcard['Birthday'] = bday
+        elif key == 'version':
+            # Ignore the key for vcard version
+            pass
         else:
+            print('unidentified key ' + key)
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
         logging.warning("no name for vCard in file `{}'".format(vcard_filepath))
-    if all(telephone_number is None for telephone_number in [cell, work, home]):
+    if all(telephone_number is None for telephone_number in [cell, work, home, mobile]):
         logging.warning("no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name))
 
     return vcard
@@ -138,11 +165,21 @@ def main():
         dest="loglevel",
         const=logging.DEBUG,
     )
+    parser.add_argument(
+        '-r',
+        '--recursive',
+        help='Recursively search for vcard files in the specified directory & subdirectories',
+        action='store_true',
+        dest='is_recursive'
+    )
     args = parser.parse_args()
     logging.basicConfig(level=args.loglevel)
 
-    vcard_pattern = os.path.join(args.read_dir, "*.vcf")
-    vcard_paths = sorted(glob.glob(vcard_pattern))
+    if args.is_recursive:
+        vcard_pattern = os.path.join(args.read_dir, "**/*.vcf")
+    else:
+        vcard_pattern = os.path.join(args.read_dir, "*.vcf")
+    vcard_paths = sorted(glob.glob(vcard_pattern, recursive=args.is_recursive))
     if len(vcard_paths) == 0:
         logging.error("no files ending with `.vcf` in directory `{}'".format(args.read_dir))
         sys.exit(2)
