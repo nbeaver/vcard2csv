@@ -18,6 +18,11 @@ pip-install: requirements.txt
 	pip install -r requirements.txt
 	# pip install vobject
 
+.PHONY: pip-install-dev
+pip-install-dev: requirements-dev.txt
+	pip install -r requirements-dev.txt
+	# pip install vobject pylint
+
 .PHONY: pip-freeze
 pip-freeze:
 	pip freeze > requirements.txt
