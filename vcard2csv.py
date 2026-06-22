@@ -17,10 +17,11 @@ column_order = [
     'Additional name',
     'Family name',
     'Suffix',
-    'Cell phone',
-    'Work phone',
+    'Telephone',
     'Home phone',
+    'Cell phone',
     'Mobile phone',
+    'Work phone',
     'Email',
     'Address',
     'Note',
@@ -28,40 +29,52 @@ column_order = [
 ]
 
 def get_phone_numbers(vCard):
-    cell = home = work = mobile = None
+    phone = cell = home = work = mobile = None
     for tel in vCard.tel_list:
         if vCard.version.value == '2.1':
-            if 'CELL' in tel.singletonparams:
-                cell = str(tel.value).strip()
-            elif 'WORK' in tel.singletonparams:
-                work = str(tel.value).strip()
-            elif 'HOME' in tel.singletonparams:
-                home = str(tel.value).strip()
-            elif 'MOBILE' in tel.singletonparams:
-                mobile = str(tel.value).strip()
+            # tel.value should already be a string.
+            tel_value = tel.value.strip()
+            params = [param.lower() for param in tel.singletonparams]
+            if params == []:
+                phone = tel_value
+            elif 'cell' in params:
+                cell = tel_value
+            elif 'work' in params:
+                work = tel_value
+            elif 'home' in params:
+                home = tel_value
+            elif 'mobile' in params:
+                mobile = tel_value
             else:
-                logger.warning("Warning: Unrecognized phone number category in `{}'".format(vCard))
-                tel.prettyPrint()
+                logger.warning("Warning: Unrecognized phone number category in {}".format(repr(vCard.tel_list)))
+                logger.info("tel = {}".format(tel.prettyPrint()))
         elif vCard.version.value == '3.0':
-            if 'CELL' in tel.params['TYPE'] or 'cell' in tel.params['TYPE']:
-                cell = str(tel.value).strip()
-            elif 'WORK' in tel.params['TYPE'] or 'work' in tel.params['TYPE']:
-                work = str(tel.value).strip()
-            elif 'HOME' in tel.params['TYPE'] or 'home' in tel.params['TYPE']:
-                home = str(tel.value).strip()
-            elif 'mobile' in tel.params['TYPE'] or 'MOBILE' in tel.params['TYPE']:
-                mobile = str(tel.value).strip()
+            # tel.value should already be a string.
+            tel_value = tel.value.strip()
+            if 'TYPE' in tel.params:
+                telephone_type = [val.lower() for val in tel.params['TYPE']]
+                if 'cell' in telephone_type:
+                    cell = tel_value
+                elif 'work' in telephone_type:
+                    work = tel_value
+                elif 'home' in telephone_type:
+                    home = tel_value
+                elif 'mobile' in telephone_type:
+                    mobile = tel_value
+                else:
+                    logger.warning("Unrecognized phone number category in `{}'".format(vCard))
+                    tel.prettyPrint()
             else:
-                logger.warning("Unrecognized phone number category in `{}'".format(vCard))
-                tel.prettyPrint()
+                phone = tel_value
         else:
             raise NotImplementedError("Version not implemented: {}".format(vCard.version.value))
 
+    logger.debug("phone = {}".format(repr(phone)))
     logger.debug("cell = {}".format(repr(cell)))
     logger.debug("home = {}".format(repr(home)))
     logger.debug("work = {}".format(repr(work)))
     logger.debug("mobile = {}".format(repr(mobile)))
-    return cell, home, work, mobile
+    return phone, cell, home, work, mobile
 
 def get_info_list(vCard, vcard_filepath):
     vcard = collections.OrderedDict()
@@ -83,7 +96,8 @@ def get_info_list(vCard, vcard_filepath):
             vcard['Suffix'] = vCard.n.value.suffix
         elif key == 'tel':
             logger.debug("tel_list = {}".format(repr(vCard.tel_list)))
-            cell, home, work, mobile = get_phone_numbers(vCard)
+            phone, cell, home, work, mobile = get_phone_numbers(vCard)
+            vcard['Telephone'] = phone
             vcard['Cell phone'] = cell
             vcard['Home phone'] = home
             vcard['Work phone'] = work
@@ -109,7 +123,7 @@ def get_info_list(vCard, vcard_filepath):
             # Ignore the key for vcard version
             pass
         else:
-            print('unidentified key ' + key)
+            logging.warning('unused key {}'.format(repr(key)))
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
