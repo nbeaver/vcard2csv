@@ -115,7 +115,7 @@ def get_phone_numbers(vCard):
     return phone_numbers
 
 
-def get_info_list(vCard, vcard_filepath):
+def get_info_list(vCard, vcf_filepath):
     info = collections.OrderedDict()
     for column in column_order:
         info[column] = None
@@ -162,23 +162,21 @@ def get_info_list(vCard, vcard_filepath):
             pass
         else:
             # An unused key, like `adr`, `title`, `url`, etc.
-            logging.warning(
-                "unused key {} in file {}".format(repr(key), repr(vcard_filepath))
-            )
+            logging.warning("unused key %s in file %s", repr(key), repr(vcf_filepath))
     if name is None:
-        logger.warning("no name for vCard in file %s", repr(vcard_filepath))
+        logger.warning("no name for vCard in file %s", repr(vcf_filepath))
     if all(telephone_number is None for telephone_number in [cell, work, home, mobile]):
         logger.warning(
             "no telephone numbers for file %s with name %s",
-            repr(vcard_filepath),
+            repr(vcf_filepath),
             repr(name),
         )
 
     return info
 
 
-def get_vcards(vcard_filepath):
-    with open(vcard_filepath) as fp:
+def get_vcards(vcf_filepath):
+    with open(vcf_filepath, encoding="utf-8") as fp:
         all_text = fp.read()
     for component in vobject.readComponents(all_text):
         yield component
