@@ -80,11 +80,10 @@ def get_phone_numbers(vCard):
                 phone_numbers.preferred = tel_value
             else:
                 logger.warning(
-                    "Warning: Unrecognized phone number category in {}".format(
-                        repr(vCard.tel_list)
-                    )
+                    "Warning: Unrecognized phone number category in %s",
+                    repr(vCard.tel_list),
                 )
-                logger.info("tel = {}".format(tel.prettyPrint()))
+                logger.info("tel = %s", tel.prettyPrint())
         elif vCard.version.value == "3.0":
             # tel.value should already be a string.
             tel_value = tel.value.strip()
@@ -102,9 +101,7 @@ def get_phone_numbers(vCard):
                     phone_numbers.preferred = tel_value
                 else:
                     logger.warning(
-                        "Unrecognized phone number category in `{}'".format(
-                            repr(vCard.tel_list)
-                        )
+                        "Unrecognized phone number category in %s", repr(vCard.tel_list)
                     )
                     tel.prettyPrint()
             else:
@@ -114,7 +111,7 @@ def get_phone_numbers(vCard):
                 "Version not implemented: {}".format(vCard.version.value)
             )
 
-    logger.debug("phone_numbers = {}".format(phone_numbers))
+    logger.debug("phone_numbers = %s", phone_numbers)
     return phone_numbers
 
 
@@ -126,10 +123,10 @@ def get_info_list(vCard, vcard_filepath):
     vCard.validate()
     for key, val in list(vCard.contents.items()):
         if key == "fn":
-            logger.debug("fn = {}".format(repr(vCard.fn.value)))
+            logger.debug("fn = %s", repr(vCard.fn.value))
             vcard["Formatted Name"] = vCard.fn.value
         elif key == "n":
-            logger.debug("n = {}".format(repr(vCard.n.value)))
+            logger.debug("n = %s", repr(vCard.n.value))
             vcard["Name"] = str(vCard.n.value).strip()
             vcard["Prefix"] = vCard.n.value.prefix
             vcard["Given name"] = vCard.n.value.given
@@ -137,7 +134,7 @@ def get_info_list(vCard, vcard_filepath):
             vcard["Family name"] = vCard.n.value.family
             vcard["Suffix"] = vCard.n.value.suffix
         elif key == "tel":
-            logger.debug("tel_list = {}".format(repr(vCard.tel_list)))
+            logger.debug("tel_list = %s", repr(vCard.tel_list))
             phone_numbers = get_phone_numbers(vCard)
             vcard["Telephone"] = phone_numbers.phone
             vcard["Cell phone"] = phone_numbers.cell
@@ -146,15 +143,15 @@ def get_info_list(vCard, vcard_filepath):
             vcard["Mobile phone"] = phone_numbers.mobile
             vcard["Preferred phone"] = phone_numbers.preferred
         elif key == "email":
-            logger.debug("email = {}".format(repr(vCard.email.value)))
+            logger.debug("email = %s", repr(vCard.email.value))
             email = str(vCard.email.value).strip()
             vcard["Email"] = email
         elif key == "note":
-            logger.debug("note = {}".format(repr(vCard.note.value)))
+            logger.debug("note = %s", repr(vCard.note.value))
             note = str(vCard.note.value)
             vcard["Note"] = note
         elif key == "adr":
-            logger.debug("adr = {}".format(repr(vCard.adr.value)))
+            logger.debug("adr = %s", repr(vCard.adr.value))
             adr = str(vCard.adr.value).strip()
             if adr.startswith('"') and adr.endswith('"'):
                 adr = adr[1:-1]
@@ -172,12 +169,12 @@ def get_info_list(vCard, vcard_filepath):
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
-        logger.warning("no name for vCard in file `{}'".format(vcard_filepath))
+        logger.warning("no name for vCard in file %s", repr(vcard_filepath))
     if all(telephone_number is None for telephone_number in [cell, work, home, mobile]):
         logger.warning(
-            "no telephone numbers for file `{}' with name `{}'".format(
-                vcard_filepath, name
-            )
+            "no telephone numbers for file %s with name %s",
+            repr(vcard_filepath),
+            repr(name),
         )
 
     return vcard
@@ -257,9 +254,7 @@ def main():
         vcard_pattern = os.path.join(args.read_dir, "*.vcf")
     vcard_paths = sorted(glob.glob(vcard_pattern, recursive=args.is_recursive))
     if len(vcard_paths) == 0:
-        logger.error(
-            "no files ending with `.vcf` in directory `{}'".format(args.read_dir)
-        )
+        logger.error("no files ending with `.vcf` in directory %s", repr(args.read_dir))
         raise FileNotFoundError
 
     # Tab separated values are less annoying than comma-separated values.
