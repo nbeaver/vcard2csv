@@ -52,12 +52,13 @@ or this (Python 3)::
     ModuleNotFoundError: No module named 'vobject'
 
 
-then you need to install the python `vobject`_ library,
-which you can do with pip::
+then you need to install the Python `vobject`_ library,
+which you `can do with pip`_::
 
     pip install --user vobject
 
 .. _vobject: http://vobject.skyhouseconsulting.com/
+.. _can do with pip: https://pypi.org/project/vobject/
 
 It is also in the major package managers.
 
