@@ -4,3 +4,4 @@ test.csv
 .idea
 *.csv
 .venv/
+vcard2csv.egg-info/

@@ -5,6 +5,9 @@ version = "0.0.1"
 [project.scripts]
 vcard2csv = "vcard2csv:main"
 
+[tool.setuptools.packages.find]
+exclude = ["empty", "issues", "example-vcards"]
+
 [tool.pylint.main]
 init-hook ="""
 try:

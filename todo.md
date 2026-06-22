@@ -4,6 +4,7 @@
 - [x] Write a Makefile to generate the CSV output.
 - [ ] Suppress output of fields if they are never used
 - [ ] Add nickname column
+- [ ] Get `pip install` working in the virtual environment
 
 # Test cases to add
 
