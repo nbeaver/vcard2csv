@@ -22,6 +22,7 @@ column_order = [
     'Cell phone',
     'Mobile phone',
     'Work phone',
+    'Preferred phone',
     'Email',
     'Address',
     'Note',
@@ -29,13 +30,14 @@ column_order = [
 ]
 
 class PhoneNumbers:
-    fields = ('cell', 'home', 'mobile', 'phone', 'work')
+    fields = ('cell', 'home', 'mobile', 'phone', 'preferred', 'work')
     __slots__ = fields
-    def __init__(self, cell=None, home=None, mobile=None, phone=None, work=None):
+    def __init__(self, cell=None, home=None, mobile=None, phone=None, preferred=None, work=None):
         self.cell = cell
         self.home = home
         self.mobile = mobile
         self.phone = phone
+        self.preferred = preferred
         self.work = work
 
     def __repr__(self):
@@ -65,6 +67,8 @@ def get_phone_numbers(vCard):
                 phone_numbers.home = tel_value
             elif 'mobile' in params:
                 phone_numbers.mobile = tel_value
+            elif 'pref' in params:
+                phone_numbers.preferred = tel_value
             else:
                 logger.warning("Warning: Unrecognized phone number category in {}".format(repr(vCard.tel_list)))
                 logger.info("tel = {}".format(tel.prettyPrint()))
@@ -81,6 +85,8 @@ def get_phone_numbers(vCard):
                     phone_numbers.home = tel_value
                 elif 'mobile' in telephone_type:
                     phone_numbers.mobile = tel_value
+                elif 'pref' in telephone_type:
+                    phone_numbers.preferred = tel_value
                 else:
                     logger.warning("Unrecognized phone number category in `{}'".format(repr(vCard.tel_list)))
                     tel.prettyPrint()
@@ -118,6 +124,7 @@ def get_info_list(vCard, vcard_filepath):
             vcard['Home phone'] = phone_numbers.home
             vcard['Work phone'] = phone_numbers.work
             vcard['Mobile phone'] = phone_numbers.mobile
+            vcard['Preferred phone'] = phone_numbers.preferred
         elif key == 'email':
             logger.debug("email = {}".format(repr(vCard.email.value)))
             email = str(vCard.email.value).strip()
