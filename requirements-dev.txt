@@ -1,8 +1,26 @@
 -r requirements.txt
 astroid==4.0.4
+asttokens==3.0.1
+decorator==5.3.1
 dill==0.4.1
+executing==2.2.1
+ipdb==0.13.13
+ipython==9.14.1
+ipython_pygments_lexers==1.1.1
 isort==8.0.1
+jedi==0.20.0
+matplotlib-inline==0.2.2
 mccabe==0.7.0
+parso==0.8.7
+pexpect==4.9.0
 platformdirs==4.10.0
+prompt_toolkit==3.0.52
+psutil==7.2.2
+ptyprocess==0.7.0
+pure_eval==0.2.3
+Pygments==2.20.0
 pylint==4.0.6
+stack-data==0.6.3
 tomlkit==0.15.0
+traitlets==5.15.1
+wcwidth==0.8.1
