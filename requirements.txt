@@ -1,1 +1,4 @@
-vobject>=0.9.6.1
+python-dateutil==2.9.0.post0
+pytz==2026.2
+six==1.17.0
+vobject==0.9.9
