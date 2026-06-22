@@ -262,7 +262,7 @@ def main():
         writer.writerow(column_order)
 
         for vcard_path in vcard_paths:
-            logging.info("vcard_path = {}".format(repr(vcard_path)))
+            logging.info("vcard_path = %s", repr(vcard_path))
             for vcard in get_vcards(vcard_path):
                 vcard_info = get_info_list(vcard, vcard_path)
                 writer.writerow(list(vcard_info.values()))
