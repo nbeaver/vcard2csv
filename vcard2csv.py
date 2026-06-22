@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-import vobject
 import glob
 import csv
 import argparse
 import os.path
-import sys
 import logging
 import collections
+import vobject
 
 logger = logging.getLogger(__name__)
 
