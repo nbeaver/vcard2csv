@@ -10,9 +10,13 @@ import collections
 logger = logging.getLogger(__name__)
 
 column_order = [
+    'Formatted Name',
     'Name',
-    'First name',
-    'Last name',
+    'Prefix',
+    'Given name',
+    'Additional name',
+    'Family name',
+    'Suffix',
     'Cell phone',
     'Work phone',
     'Home phone',
@@ -68,17 +72,15 @@ def get_info_list(vCard, vcard_filepath):
     for key, val in list(vCard.contents.items()):
         if key == 'fn':
             logger.debug("fn = {}".format(repr(vCard.fn.value)))
-            vcard['Name'] = vCard.fn.value
-            names = vCard.fn.value.split(' ')
-            vcard['First name'] = names[0]
-            vcard['Last name'] = names[1]
+            vcard['Formatted Name'] = vCard.fn.value
         elif key == 'n':
             logger.debug("n = {}".format(repr(vCard.n.value)))
-            name = str(vCard.n.valueRepr()).replace('  ', ' ').strip()
-            vcard['Name'] = name
-            names = name.split(' ')
-            vcard['First name'] = names[0]
-            vcard['Last name'] = names[1]
+            vcard['Name'] = str(vCard.n.value).strip()
+            vcard['Prefix'] = vCard.n.value.prefix
+            vcard['Given name'] = vCard.n.value.given
+            vcard['Additional name'] = vCard.n.value.additional
+            vcard['Family name'] = vCard.n.value.family
+            vcard['Suffix'] = vCard.n.value.suffix
         elif key == 'tel':
             logger.debug("tel_list = {}".format(repr(vCard.tel_list)))
             cell, home, work, mobile = get_phone_numbers(vCard)
