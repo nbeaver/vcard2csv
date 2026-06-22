@@ -184,7 +184,7 @@ def main():
     vcard_paths = sorted(glob.glob(vcard_pattern, recursive=args.is_recursive))
     if len(vcard_paths) == 0:
         logging.error("no files ending with `.vcf` in directory `{}'".format(args.read_dir))
-        sys.exit(2)
+        raise FileNotFoundError
 
     # Tab separated values are less annoying than comma-separated values.
     with open(args.tsv_file, 'w', encoding="utf-8", newline='') as tsv_fp:
