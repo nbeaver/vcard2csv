@@ -1,0 +1,8 @@
+-r requirements.txt
+astroid==4.0.4
+dill==0.4.1
+isort==8.0.1
+mccabe==0.7.0
+platformdirs==4.10.0
+pylint==4.0.6
+tomlkit==0.15.0
