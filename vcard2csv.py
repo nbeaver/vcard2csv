@@ -7,6 +7,7 @@ import os.path
 import sys
 import logging
 import collections
+logger = logging.getLogger(__name__)
 
 column_order = [
     'Name',
@@ -35,7 +36,7 @@ def get_phone_numbers(vCard):
             elif 'MOBILE' in tel.singletonparams:
                 mobile = str(tel.value).strip()
             else:
-                logging.warning("Warning: Unrecognized phone number category in `{}'".format(vCard))
+                logger.warning("Warning: Unrecognized phone number category in `{}'".format(vCard))
                 tel.prettyPrint()
         elif vCard.version.value == '3.0':
             if 'CELL' in tel.params['TYPE'] or 'cell' in tel.params['TYPE']:
@@ -47,7 +48,7 @@ def get_phone_numbers(vCard):
             elif 'mobile' in tel.params['TYPE'] or 'MOBILE' in tel.params['TYPE']:
                 mobile = str(tel.value).strip()
             else:
-                logging.warning("Unrecognized phone number category in `{}'".format(vCard))
+                logger.warning("Unrecognized phone number category in `{}'".format(vCard))
                 tel.prettyPrint()
         else:
             raise NotImplementedError("Version not implemented: {}".format(vCard.version.value))
@@ -99,9 +100,9 @@ def get_info_list(vCard, vcard_filepath):
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
-        logging.warning("no name for vCard in file `{}'".format(vcard_filepath))
+        logger.warning("no name for vCard in file `{}'".format(vcard_filepath))
     if all(telephone_number is None for telephone_number in [cell, work, home, mobile]):
-        logging.warning("no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name))
+        logger.warning("no telephone numbers for file `{}' with name `{}'".format(vcard_filepath, name))
 
     return vcard
 
@@ -174,6 +175,7 @@ def main():
     )
     args = parser.parse_args()
     logging.basicConfig(level=args.loglevel)
+    logger.setLevel(args.loglevel)
 
     if args.is_recursive:
         vcard_pattern = os.path.join(args.read_dir, "**/*.vcf")
