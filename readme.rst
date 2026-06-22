@@ -12,15 +12,26 @@ It can also be imported and used as a module.
 
 Not all of the vCard fields are preserved; currently only these fields:
 
+- Formatted Name
 - Name
-- Cell phone
-- Work phone
+- Prefix
+- Given name
+- Additional name
+- Family name
+- Suffix
+- Telephone
 - Home phone
+- Cell phone
+- Mobile phone
+- Work phone
+- Preferred phone
 - Email
+- Address
 - Note
+- Birthday
 
-(I used this to convert vCards from an old LG Rumor 2 cell phone,
-so I have not needed to extract additional fields.)
+(I used this to convert vCards from an old LG Rumor 2 cell phone circa 2013,
+so I have not needed even all of these fields.)
 
 ------------
 Dependencies
