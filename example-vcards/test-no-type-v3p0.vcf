@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Apple Inc.//iOS 13.6//EN
+N:Smith;Son;John;;
+FN:John Smith Son
+NICKNAME:The Boss
+ORG:HisPlace;
+item1.EMAIL;type=INTERNET;type=pref:johnsmith@some.org
+item1.X-ABLabel:Trabajo
+item2.TEL;type=pref:+3461234567
+item2.X-ABLabel:Móvil
+item3.TEL:+34912345678
+item3.X-ABLabel:Trabajo
+REV:2020-08-12T07:29:12Z
+END:VCARD
