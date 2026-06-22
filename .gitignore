@@ -3,3 +3,4 @@
 test.csv
 .idea
 *.csv
+.venv/
