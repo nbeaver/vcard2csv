@@ -2,11 +2,14 @@
 
 - [ ] Preserve every field in the VCF file, not just some of them.
 - [x] Write a Makefile to generate the CSV output.
+- [ ] Suppress output of fields if they are never used
+- [ ] Add nickname column
 
 # Test cases to add
 
 - [ ] Add example of name with suffix and prefix
 - [ ] Add example of version 3.0 with Unicode
+- [ ] Add example of phone number with 'MOBILE' field
 
 # Maybe do
 
