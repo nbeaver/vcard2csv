@@ -4,3 +4,13 @@ version = "0.0.1"
 
 [project.scripts]
 vcard2csv = "vcard2csv:main"
+
+[tool.pylint.main]
+init-hook ="""
+try:
+  import pylint_venv
+except ImportError:
+  pass
+else:
+  pylint_venv.inithook()
+"""
