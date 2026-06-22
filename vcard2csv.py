@@ -52,6 +52,11 @@ def get_phone_numbers(vCard):
                 tel.prettyPrint()
         else:
             raise NotImplementedError("Version not implemented: {}".format(vCard.version.value))
+
+    logger.debug("cell = {}".format(repr(cell)))
+    logger.debug("home = {}".format(repr(home)))
+    logger.debug("work = {}".format(repr(work)))
+    logger.debug("mobile = {}".format(repr(mobile)))
     return cell, home, work, mobile
 
 def get_info_list(vCard, vcard_filepath):
@@ -62,29 +67,35 @@ def get_info_list(vCard, vcard_filepath):
     vCard.validate()
     for key, val in list(vCard.contents.items()):
         if key == 'fn':
+            logger.debug("fn = {}".format(repr(vCard.fn.value)))
             vcard['Name'] = vCard.fn.value
             names = vCard.fn.value.split(' ')
             vcard['First name'] = names[0]
             vcard['Last name'] = names[1]
         elif key == 'n':
+            logger.debug("n = {}".format(repr(vCard.n.value)))
             name = str(vCard.n.valueRepr()).replace('  ', ' ').strip()
             vcard['Name'] = name
             names = name.split(' ')
             vcard['First name'] = names[0]
             vcard['Last name'] = names[1]
         elif key == 'tel':
+            logger.debug("tel_list = {}".format(repr(vCard.tel_list)))
             cell, home, work, mobile = get_phone_numbers(vCard)
             vcard['Cell phone'] = cell
             vcard['Home phone'] = home
             vcard['Work phone'] = work
             vcard['Mobile phone'] = mobile
         elif key == 'email':
+            logger.debug("email = {}".format(repr(vCard.email.value)))
             email = str(vCard.email.value).strip()
             vcard['Email'] = email
         elif key == 'note':
+            logger.debug("note = {}".format(repr(vCard.note.value)))
             note = str(vCard.note.value)
             vcard['Note'] = note
         elif key == 'adr':
+            logger.debug("adr = {}".format(repr(vCard.adr.value)))
             adr = str(vCard.adr.value).strip()
             if adr.startswith('"') and adr.endswith('"'):
                 adr = adr[1:-1]
@@ -183,7 +194,7 @@ def main():
         vcard_pattern = os.path.join(args.read_dir, "*.vcf")
     vcard_paths = sorted(glob.glob(vcard_pattern, recursive=args.is_recursive))
     if len(vcard_paths) == 0:
-        logging.error("no files ending with `.vcf` in directory `{}'".format(args.read_dir))
+        logger.error("no files ending with `.vcf` in directory `{}'".format(args.read_dir))
         raise FileNotFoundError
 
     # Tab separated values are less annoying than comma-separated values.
@@ -192,6 +203,7 @@ def main():
         writer.writerow(column_order)
 
         for vcard_path in vcard_paths:
+            logging.info("vcard_path = {}".format(repr(vcard_path)))
             for vcard in get_vcards(vcard_path):
                 vcard_info = get_info_list(vcard, vcard_path)
                 writer.writerow(list(vcard_info.values()))
