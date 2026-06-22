@@ -152,9 +152,7 @@ def get_info_list(vCard, vcard_filepath):
             info["Note"] = note
         elif key == "adr":
             logger.debug("adr = %s", repr(vCard.adr.value))
-            adr = str(vCard.adr.value).strip()
-            if adr.startswith('"') and adr.endswith('"'):
-                adr = adr[1:-1]
+            adr = str(vCard.adr.value).strip().strip('"')
             info["Address"] = adr
         elif key == "bday":
             bday = str(vCard.bday.value).strip()
