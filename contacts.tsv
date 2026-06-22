@@ -1,17 +1,18 @@
-Formatted Name	Name	Prefix	Given name	Additional name	Family name	Suffix	Telephone	Home phone	Cell phone	Mobile phone	Work phone	Email	Address	Note	Birthday
-John Doe	John  Doe		John		Doe			+1 202 555 1212	+1 781 555 1212		+1 (617) 555-1234	johnDoe@example.org	"2 Example Avenue
+Formatted Name	Name	Prefix	Given name	Additional name	Family name	Suffix	Telephone	Home phone	Cell phone	Mobile phone	Work phone	Preferred phone	Email	Address	Note	Birthday
+John Doe	John  Doe		John		Doe			+1 202 555 1212	+1 781 555 1212		+1 (617) 555-1234		johnDoe@example.org	"2 Example Avenue
 Anytown, NY 01111
 USA"	John Doe has a long and varied history, being documented on more police files that anyone else. Reports of his death are alas numerous.	
-Michael Coote	Michael  Coote		Michael		Coote							mcoote@example.org			
-Barney McGee	Barney  McGee		Barney		McGee							bmcgee2@example.org			
-Slugger O'Toole	Slugger  O'Toole		Slugger		O'Toole							sotoole@example.org			
-Bill Tracey	Bill  Tracey		Bill		Tracey							btracey@example.org			
-Johnny McGurk	Johnny  McGurk		Johnny		McGurk							jmcgurk@example.org			
-	Joe  Schmoe		Joe		Schmoe			3188653590	3841418832		1744350769				
-								1234567890							
-John Doe	John  Doe		John		Doe		+1 (234) 555-6789					jdoe@example.net			
-	Abraham  Lincoln		Abraham		Lincoln										
-	Weather By Text Message		Weather	By Text	Message				44636					"Examples:
+Michael Coote	Michael  Coote		Michael		Coote								mcoote@example.org			
+Barney McGee	Barney  McGee		Barney		McGee								bmcgee2@example.org			
+Slugger O'Toole	Slugger  O'Toole		Slugger		O'Toole								sotoole@example.org			
+Bill Tracey	Bill  Tracey		Bill		Tracey								btracey@example.org			
+Johnny McGurk	Johnny  McGurk		Johnny		McGurk								jmcgurk@example.org			
+	Joe  Schmoe		Joe		Schmoe			3188653590	3841418832		1744350769					
+								1234567890								
+John Doe	John  Doe		John		Doe		+1 (234) 555-6789						jdoe@example.net			
+	Abraham  Lincoln		Abraham		Lincoln											
+John Smith Son	Son John Smith		Son	John	Smith		+34912345678					+3461234567	johnsmith@some.org			
+	Weather By Text Message		Weather	By Text	Message				44636						"Examples:
 w 11111
 w Nowhere"	
-č	č		č						123456789						
+č	č		č						123456789							
