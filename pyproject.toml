@@ -5,8 +5,15 @@ version = "0.0.1"
 [project.scripts]
 vcard2csv = "vcard2csv:main"
 
+# This is required to get the standalone python script built and installed.
+[tool.setuptools]
+py-modules = ["vcard2csv"]
+
+# Don't try to automatically discover other source code.
 [tool.setuptools.packages.find]
-exclude = ["empty", "issues", "example-vcards"]
+where = ["."]
+exclude = ["*"]
+include = []
 
 [tool.pylint.main]
 init-hook ="""

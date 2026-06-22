@@ -5,3 +5,4 @@ test.csv
 *.csv
 .venv/
 vcard2csv.egg-info/
+build/
