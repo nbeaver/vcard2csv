@@ -6,3 +6,4 @@ test.csv
 .venv/
 vcard2csv.egg-info/
 build/
+requirements-raw.txt

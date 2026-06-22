@@ -21,11 +21,11 @@ pip-install: requirements.txt
 .PHONY: pip-install-dev
 pip-install-dev: requirements-dev.txt
 	pip install -r requirements-dev.txt
-	# pip install vobject pylint
+	# pip install vobject pylint ipdb
 
 .PHONY: pip-freeze
 pip-freeze:
-	pip freeze > requirements.txt
+	pip freeze > requirements-raw.txt
 
 .PHONY: recreate-venv
 recreate-venv: requirements.txt
