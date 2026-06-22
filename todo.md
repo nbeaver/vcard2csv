@@ -19,3 +19,4 @@
 - [ ] Send CSV to `stdout` instead of opening a file.
 - [ ] Make phone numbers in the 123-456-7890 format instead of 1234567890 for better readability.
 - [ ] Support vCard v4.0.
+- [ ] Make delimiter adjustable
