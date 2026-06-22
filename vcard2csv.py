@@ -146,7 +146,7 @@ def get_info_list(vCard, vcard_filepath):
             # Ignore the key for vcard version
             pass
         else:
-            logging.warning('unused key {}'.format(repr(key)))
+            logging.warning('unused key {} in file {}'.format(repr(key), repr(vcard_filepath)))
             # An unused key, like `adr`, `title`, `url`, etc.
             pass
     if name is None:
