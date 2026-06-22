@@ -116,49 +116,49 @@ def get_phone_numbers(vCard):
 
 
 def get_info_list(vCard, vcard_filepath):
-    vcard = collections.OrderedDict()
+    info = collections.OrderedDict()
     for column in column_order:
-        vcard[column] = None
+        info[column] = None
     name = cell = work = home = mobile = None
     vCard.validate()
     for key, val in list(vCard.contents.items()):
         if key == "fn":
             logger.debug("fn = %s", repr(vCard.fn.value))
-            vcard["Formatted Name"] = vCard.fn.value
+            info["Formatted Name"] = vCard.fn.value
         elif key == "n":
             logger.debug("n = %s", repr(vCard.n.value))
-            vcard["Name"] = str(vCard.n.value).strip()
-            vcard["Prefix"] = vCard.n.value.prefix
-            vcard["Given name"] = vCard.n.value.given
-            vcard["Additional name"] = vCard.n.value.additional
-            vcard["Family name"] = vCard.n.value.family
-            vcard["Suffix"] = vCard.n.value.suffix
+            info["Name"] = str(vCard.n.value).strip()
+            info["Prefix"] = vCard.n.value.prefix
+            info["Given name"] = vCard.n.value.given
+            info["Additional name"] = vCard.n.value.additional
+            info["Family name"] = vCard.n.value.family
+            info["Suffix"] = vCard.n.value.suffix
         elif key == "tel":
             logger.debug("tel_list = %s", repr(vCard.tel_list))
             phone_numbers = get_phone_numbers(vCard)
-            vcard["Telephone"] = phone_numbers.phone
-            vcard["Cell phone"] = phone_numbers.cell
-            vcard["Home phone"] = phone_numbers.home
-            vcard["Work phone"] = phone_numbers.work
-            vcard["Mobile phone"] = phone_numbers.mobile
-            vcard["Preferred phone"] = phone_numbers.preferred
+            info["Telephone"] = phone_numbers.phone
+            info["Cell phone"] = phone_numbers.cell
+            info["Home phone"] = phone_numbers.home
+            info["Work phone"] = phone_numbers.work
+            info["Mobile phone"] = phone_numbers.mobile
+            info["Preferred phone"] = phone_numbers.preferred
         elif key == "email":
             logger.debug("email = %s", repr(vCard.email.value))
             email = str(vCard.email.value).strip()
-            vcard["Email"] = email
+            info["Email"] = email
         elif key == "note":
             logger.debug("note = %s", repr(vCard.note.value))
             note = str(vCard.note.value)
-            vcard["Note"] = note
+            info["Note"] = note
         elif key == "adr":
             logger.debug("adr = %s", repr(vCard.adr.value))
             adr = str(vCard.adr.value).strip()
             if adr.startswith('"') and adr.endswith('"'):
                 adr = adr[1:-1]
-            vcard["Address"] = adr
+            info["Address"] = adr
         elif key == "bday":
             bday = str(vCard.bday.value).strip()
-            vcard["Birthday"] = bday
+            info["Birthday"] = bday
         elif key == "version":
             # Ignore the key for vcard version
             pass
@@ -176,14 +176,14 @@ def get_info_list(vCard, vcard_filepath):
             repr(name),
         )
 
-    return vcard
+    return info
 
 
 def get_vcards(vcard_filepath):
     with open(vcard_filepath) as fp:
         all_text = fp.read()
-    for vCard in vobject.readComponents(all_text):
-        yield vCard
+    for component in vobject.readComponents(all_text):
+        yield component
 
 
 def readable_directory(path):
