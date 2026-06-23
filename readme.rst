@@ -80,16 +80,13 @@ https://software.opensuse.org/package/python3-vobject
 Usage
 -----
 
-The vCard files must have the suffix ``.vcf``.
-Run the script in the directory containing the vCard files
-and specify the output filename::
+The first argument is the path to the directory
+containing the ``.vcf`` files and the second
+is the name of the output file::
 
-    python vcard2csv.py . foo.csv
+    python vcard2csv.py ./example-vcards/ contacts.tsv
 
-Or point the script at a directory containing the ``.vcf`` files::
-
-    python vcard2csv.py example-vcards foo.csv
-
+The vCard files in the given directory must have the suffix ``.vcf``.
 For additional help and options, pass the ``-h`` flag::
 
     python vcard2csv.py -h
