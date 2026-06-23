@@ -81,7 +81,7 @@ Usage
 -----
 
 The vCard files must have the suffix ``.vcf``.
-Simply run the script in the directory containing the vCard files
+Run the script in the directory containing the vCard files
 and specify the output filename::
 
     python vcard2csv.py . foo.csv
@@ -100,7 +100,7 @@ The script is compatible with both Python 2 and Python 3.
 Bugs
 ----
 
-Only a few of the vCard fields are preserved;
+Only some of the vCard fields are preserved;
 this may be undesirable.
 
 vCard version 4.0 has not been implemented,
