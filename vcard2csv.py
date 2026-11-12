@@ -198,7 +198,7 @@ def writable_file(path):
         # If the file doesn't already exist,
         # the most direct way to tell if it's writable
         # is to try writing to it.
-        with open(path, "w") as fp:
+        with open(path, "w", encoding="utf-8") as fp:
             pass
     return path
 
