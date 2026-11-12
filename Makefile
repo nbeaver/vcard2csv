@@ -13,6 +13,10 @@ test-python2 :
 	python2 vcard2csv.py example-vcards/ contacts.tsv
 	-python2 vcard2csv.py empty/ test.tsv
 
+.PHONY: clean
+clean:
+	rm -f -- contacts.tsv test.tsv
+
 .PHONY: pip-install
 pip-install: requirements.txt
 	pip install -r requirements.txt
